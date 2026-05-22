@@ -1,0 +1,1 @@
+A local-first AI system combining Retrieval-Augmented Generation (RAG) and Social Network Analysis (SNA). Built with Spring Boot, Spring AI, Ollama, and │ PostgreSQL pgvector to parse unstructured documents, perform semantic search, and map complex data relationships. 
