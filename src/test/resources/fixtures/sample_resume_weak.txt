@@ -1,0 +1,15 @@
+My resume.
+I want a job as a developer.
+
+Stuff I did:
+- I worked at a company for some time doing code.
+- I wrote some scripts in python.
+- Helped users.
+- Did some HTML edits.
+
+Skills:
+- Coding, Windows, MS Office.
+
+Contact:
+Email: test@test.com
+Phone: 12345

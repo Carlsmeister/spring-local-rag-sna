@@ -25,10 +25,9 @@ class CvAnalysisMapperTest {
         String cleanJson = """
                 {
                   "atsScore": 85,
-                  "grammarScore": 90,
                   "strengths": ["Clear layout", "Strong skills section"],
                   "weaknesses": ["Lack of action verbs"],
-                  "suggestions": ["Add action verbs to experience section"]
+                  "recommendations": ["Add action verbs to experience section"]
                 }
                 """;
 
@@ -36,10 +35,9 @@ class CvAnalysisMapperTest {
 
         assertNotNull(response);
         assertEquals(85, response.atsScore());
-        assertEquals(90, response.grammarScore());
         assertEquals(List.of("Clear layout", "Strong skills section"), response.strengths());
         assertEquals(List.of("Lack of action verbs"), response.weaknesses());
-        assertEquals(List.of("Add action verbs to experience section"), response.suggestions());
+        assertEquals(List.of("Add action verbs to experience section"), response.recommendations());
     }
 
     @Test
@@ -48,10 +46,9 @@ class CvAnalysisMapperTest {
                 ```json
                 {
                   "atsScore": 70,
-                  "grammarScore": 80,
                   "strengths": ["Experience"],
                   "weaknesses": [],
-                  "suggestions": []
+                  "recommendations": []
                 }
                 ```
                 """;
@@ -60,10 +57,9 @@ class CvAnalysisMapperTest {
 
         assertNotNull(response);
         assertEquals(70, response.atsScore());
-        assertEquals(80, response.grammarScore());
         assertEquals(List.of("Experience"), response.strengths());
         assertTrue(response.weaknesses().isEmpty());
-        assertTrue(response.suggestions().isEmpty());
+        assertTrue(response.recommendations().isEmpty());
     }
 
     @Test
@@ -74,10 +70,9 @@ class CvAnalysisMapperTest {
                 ```json
                 {
                   "atsScore": 95,
-                  "grammarScore": 95,
                   "strengths": ["Excellent summary"],
                   "weaknesses": ["Formatting mismatch"],
-                  "suggestions": ["Adjust margins"]
+                  "recommendations": ["Adjust margins"]
                 }
                 ```
                 
@@ -88,10 +83,9 @@ class CvAnalysisMapperTest {
 
         assertNotNull(response);
         assertEquals(95, response.atsScore());
-        assertEquals(95, response.grammarScore());
         assertEquals(List.of("Excellent summary"), response.strengths());
         assertEquals(List.of("Formatting mismatch"), response.weaknesses());
-        assertEquals(List.of("Adjust margins"), response.suggestions());
+        assertEquals(List.of("Adjust margins"), response.recommendations());
     }
 
     @Test
@@ -104,8 +98,7 @@ class CvAnalysisMapperTest {
     void testToCvAnalysisResponse_InvalidJson_ThrowsException() {
         String invalidJson = """
                 {
-                  "atsScore": "not a number",
-                  "grammarScore": 90
+                  "atsScore": "not a number"
                 }
                 """;
 

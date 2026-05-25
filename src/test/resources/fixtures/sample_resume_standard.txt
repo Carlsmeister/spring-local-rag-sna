@@ -1,0 +1,31 @@
+JOHN DOE
+Senior Software Engineer
+john.doe@email.com | +1-555-0199 | Boston, MA | linkedin.com/in/johndoe
+
+SUMMARY
+Highly accomplished Senior Software Engineer with over 8 years of experience designing, building, and deploying enterprise-grade distributed systems. Proven track record of optimizing application performance, migrating legacy codebases to cloud-native architectures, and mentoring high-performing engineering teams.
+
+PROFESSIONAL EXPERIENCE
+
+Senior Software Engineer | TechCorp Inc., Boston, MA
+June 2021 - Present
+- Led the architectural redesign and migration of a monolithic payment processing gateway to a microservices-based architecture using Spring Boot 3.x and Java 17.
+- Improved API throughput by 45% and reduced latency by 120ms by implementing reactive redis caching and asynchronous event-driven queues (RabbitMQ).
+- Orchestrated containerized deployments via Docker and Kubernetes (EKS), reducing staging deployment cycles by 30% through fully automated CI/CD pipelines (GitHub Actions).
+- Mentored 4 junior and mid-level software engineers, conducting rigorous code reviews and pairing sessions to raise code coverage to 92%.
+
+Software Engineer | DevServices LLC, Boston, MA
+September 2018 - May 2021
+- Developed and maintained core backend REST APIs serving over 50,000 active daily users using Spring Boot, Hibernate, and PostgreSQL.
+- Reduced database query times by 35% through custom index optimization and query refactoring.
+- Spearheaded the integration of a third-party OAuth2 authorization server, securing 12 internal downstream API services.
+
+TECHNICAL SKILLS
+- Languages: Java, SQL, HTML, CSS, JavaScript, Bash
+- Frameworks & Libraries: Spring Boot, Spring Security, Hibernate JPA, JUnit, Mockito
+- Database & Caching: PostgreSQL, MySQL, Redis, PGVector
+- Devops & Tools: Docker, Kubernetes, AWS (S3, EC2, EKS), Git, Maven, Jenkins, GitHub Actions
+
+EDUCATION
+Bachelor of Science in Computer Science | Boston University, Boston, MA
+Graduated: May 2018

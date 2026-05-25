@@ -23,7 +23,6 @@ public class AiService {
 
         Focus on:
         - professionalism
-        - grammar
         - ATS optimization
         - missing keywords
         - readability
@@ -32,10 +31,9 @@ public class AiService {
         
         {
           "atsScore": number,
-          "grammarScore": number,
           "strengths": [],
           "weaknesses": [],
-          "suggestions": []
+          "recommendations": []
         }
 
         CV:
