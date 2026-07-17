@@ -31,35 +31,12 @@ public class RewriteMapper {
             throw new IllegalArgumentException("AI response cannot be null or empty");
         }
 
-        String cleanedJson = cleanResponse(rawResponse);
+        String cleanedJson = JsonCleanUtils.cleanResponse(rawResponse);
 
         try {
             return objectMapper.readValue(cleanedJson, RewriteAiResponse.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to map AI response to RewriteAiResponse. Raw response was: " + rawResponse, e);
         }
-    }
-
-    private String cleanResponse(String rawResponse) {
-        String cleaned = rawResponse.trim();
-
-        // 1. Remove markdown block syntax if present
-        if (cleaned.startsWith("```")) {
-            // Remove opening ```json or ```
-            cleaned = cleaned.replaceFirst("^```(?:json)?\\s*", "");
-            // Remove closing ```
-            cleaned = cleaned.replaceFirst("\\s*```$", "");
-        }
-
-        cleaned = cleaned.trim();
-
-        // 2. Extract valid JSON object if there's any surrounding fluff
-        int firstBrace = cleaned.indexOf('{');
-        int lastBrace = cleaned.lastIndexOf('}');
-        if (firstBrace != -1 && lastBrace != -1 && lastBrace > firstBrace) {
-            cleaned = cleaned.substring(firstBrace, lastBrace + 1);
-        }
-
-        return cleaned;
     }
 }

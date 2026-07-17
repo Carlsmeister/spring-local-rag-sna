@@ -210,3 +210,80 @@ This roadmap structures the development of the **local-ai** application. It esta
 - **Tests to Add**:
   - ArchUnit tests verifying package boundary violations.
 - **Risks**: Architectural drift. Mitigated by maintaining strict ADR rules.
+
+---
+
+## Phase 14: Frontend Core Setup & Shell UI
+- **Goal**: Set up a clean, modern frontend application, configure its design tokens, and build a premium responsive sidebar layout with micro-animations.
+- **Logic to Implement**:
+  - Scaffold React/Vite frontend utilizing TailwindCSS or Vanilla CSS design variables.
+  - Implement centralized theme controls (Dark/Light mode support).
+  - Create responsive shell UI with navigation sidebars, header profiles, and smooth transitions.
+- **Acceptance Criteria**:
+  - Frontend boots instantly via `npm run dev` and renders a gorgeous, dashboard-ready main page shell.
+- **Risks**: Obsolete CSS/JS configurations. Mitigated by adhering strictly to modern browser APIs and clean UI structuring.
+
+---
+
+## Phase 15: Document Ingestion & Analysis UI
+- **Goal**: Build an interactive file dropzone and a comprehensive CV analysis workspace.
+- **Logic to Implement**:
+  - Implement a drag-and-drop file dropzone with active upload states and beautiful error toast alerts.
+  - Connect upload APIs to retrieve parsed text and initiate RAG embedding calculations.
+  - Render an interactive analysis review detailing overall ATS Score gauges, strengths/weaknesses categories, and suggested optimizations.
+- **Acceptance Criteria**:
+  - Dropping a CV file initiates upload, displays loading spinners, and transitions to a clean analytics screen displaying ATS gauges.
+
+---
+
+## Phase 16: Job Ad Matcher Workspace UI
+- **Goal**: Build a side-by-side gap matcher interface to analyze CV alignment with specific job descriptions.
+- **Logic to Implement**:
+  - Design a dual-column workspace (CV analytics on the left, Job Description input on the right).
+  - paste job descriptions and query backend match endpoints.
+  - Render missing keyword tags with color-coded density indicators and display RAG semantic match highlights.
+- **Acceptance Criteria**:
+  - Submitting job descriptions fetches match scores and lists missing keywords dynamically.
+
+---
+
+## Phase 17: Interactive Section Rewrite Workspace UI
+- **Goal**: Create an interactive sentence-level optimizer to rewrite CV details securely.
+- **Logic to Implement**:
+  - Parse uploaded CV sentences and allow clicking individual sentences.
+  - Interface sentence rewrite APIs with Mode selections (Concise, Metrics-driven, Action-oriented).
+  - Render three optimized rewrite variations, highlighting proper noun validation checks.
+- **Acceptance Criteria**:
+  - Clicking a sentence fetches style selections and replaces text upon confirmation.
+
+---
+
+## Phase 18: Telemetry Observability Monitor UI
+- **Goal**: Connect backend telemetry APIs to a gorgeous real-time performance dashboard.
+- **Logic to Implement**:
+  - Build live monitoring charts plotting agent latencies, success rates, and token footprints.
+  - Render P95 latency spreads and validation rejection trends.
+- **Acceptance Criteria**:
+  - Admin view plots operational metrics visually with no personal candidate data exposure.
+
+---
+
+## Phase 19: UI/UX Redesign Implementation
+- **Goal**: Re-engineer the complete frontend user interface from the dark neon theme to the professional corporate light-mode theme based on the UI/UX Redesign Plan.
+- **Logic to Implement**:
+  - Implement centralised design tokens (colors, typography, spacing, border-radii, shadows) in `index.css`.
+  - Remove all WebGL background assets (`Silk.tsx`), glows, blurs, and particles.
+  - Redesign Sidebar Shell navigation using the user-facing names (CV Review, Job Match, Bullet Optimizer, System Monitor) and active-navigation styling (teal marker, light blue-grey background).
+  - Redesign CV Review View (remove circular dial, introduce numerical badge + horizontal progress bar; rename weaknesses to "Improvement opportunities").
+  - Redesign Job Match View (two-column Comparison workspace, abstracting low-level jargon).
+  - Redesign Bullet Optimizer View (document-first sentence selection list, Results-focused style goal, original-vs-suggestion preview, and factual validation status).
+  - Redesign System Monitor View (visual hierarchy in the secondary position).
+  - Perform WCAG 2.2 AA contrast verification, keyboard accessibility validation, and responsive mobile-stacking layout audits.
+- **Acceptance Criteria**:
+  - Zero WebGL, glows, or particles remain.
+  - Palette strictly uses the new light-mode corporate colors.
+  - Text-heavy layouts remain readable, accessible, and responsive across all viewports.
+- **Tests to Add**:
+  - Manual verification checklists for responsive stacking and accessibility.
+  - Validation test suites to ensure existing ingestion, matching, and optimization API integrations are preserved.
+

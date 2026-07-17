@@ -21,12 +21,12 @@ class DeploymentProfileSmokeTest {
         // Verify sensible environment variable fallbacks
         assertEquals("local-ai", baseProps.getProperty("spring.application.name"));
         assertEquals("${OLLAMA_BASE_URL:http://localhost:11434}", baseProps.getProperty("spring.ai.ollama.base-url"));
-        assertEquals("${OLLAMA_MODEL:gemma4:e2b}", baseProps.getProperty("spring.ai.ollama.chat.model"));
-        assertEquals("${OLLAMA_EMBEDDING_MODEL:gemma4:e2b}", baseProps.getProperty("spring.ai.ollama.embedding.model"));
+        assertEquals("${OLLAMA_MODEL:gemma2:2b}", baseProps.getProperty("spring.ai.ollama.chat.model"));
+        assertEquals("${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}", baseProps.getProperty("spring.ai.ollama.embedding.model"));
 
-        assertEquals("jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:local_ai}", baseProps.getProperty("spring.datasource.url"));
-        assertEquals("${DB_USERNAME:postgres}", baseProps.getProperty("spring.datasource.username"));
-        assertEquals("${DB_PASSWORD:postgrespassword}", baseProps.getProperty("spring.datasource.password"));
+        assertEquals("${DB_URL:}", baseProps.getProperty("spring.datasource.url"));
+        assertEquals("${DB_USERNAME}", baseProps.getProperty("spring.datasource.username"));
+        assertEquals("${DB_PASSWORD}", baseProps.getProperty("spring.datasource.password"));
         
         assertEquals("5MB", baseProps.getProperty("spring.servlet.multipart.max-file-size"));
         assertEquals("${ALLOWED_CORS_ORIGIN:*}", baseProps.getProperty("app.security.cors.allowed-origins"));
@@ -41,7 +41,7 @@ class DeploymentProfileSmokeTest {
         }
 
         // Verify production connection mappings
-        assertEquals("jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:local_ai}", prodProps.getProperty("spring.datasource.url"));
+        assertEquals("${DB_URL:jdbc:postgresql://${DB_HOST:postgres}:${DB_PORT:5432}/${DB_NAME:local_ai}}", prodProps.getProperty("spring.datasource.url"));
         assertEquals("${DB_USERNAME}", prodProps.getProperty("spring.datasource.username"));
         assertEquals("${DB_PASSWORD}", prodProps.getProperty("spring.datasource.password"));
 

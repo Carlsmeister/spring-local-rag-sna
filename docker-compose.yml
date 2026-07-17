@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   postgres:
-    image: pgvector/pgvector:16-pgdg
+    image: pgvector/pgvector:pg16
     container_name: local-ai-db
     restart: always
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-local_ai}
+      POSTGRES_DB: ${POSTGRES_DB:-localai}
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgrespassword}
     volumes:
@@ -37,13 +37,11 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=${POSTGRES_DB:-local_ai}
+      - DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-localai}
       - DB_USERNAME=${POSTGRES_USER:-postgres}
       - DB_PASSWORD=${POSTGRES_PASSWORD:-postgrespassword}
       - OLLAMA_BASE_URL=http://ollama:11434
-      - OLLAMA_MODEL=${OLLAMA_MODEL:-gemma4:e2b}
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-gemma2:2b}
       - ALLOWED_CORS_ORIGIN=${ALLOWED_CORS_ORIGIN:-*}
     depends_on:
       - postgres

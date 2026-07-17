@@ -83,10 +83,19 @@ This document lists the core developer and runtime tools configured for the **lo
 - **When to Use**: Standard fast builds under `mvn test`.
 - **Note**: Mock the Spring AI `ChatModel` to run tests without requiring a running Ollama container on local computers.
 
----
-
-## 7. Future Deployment Tools (Phase 12+)
+## 7. Active Containerization & Deployment Tools
 
 ### Docker / Docker Compose
-- **Purpose**: Containerize the Spring Boot jar, local PostgreSQL, and server-side Ollama instances for consistent environments.
-- **When to Use**: Preparing packaging profiles for staging or production testing.
+- **Purpose**: Containerize the PostgreSQL database with the PGVector extension for local development and amateur hosting, and package the Spring Boot jar and server-side Ollama instances for staging or production testing.
+- **When to Use**: 
+  - **Local Development**: Spin up the local PostgreSQL + PGVector instance with persistent volumes (`docker compose up -d postgres`).
+  - **Deployment**: Prepare packaging profiles and run consistent service environments across hosting providers.
+
+---
+
+## 8. Model Context Protocol (MCP) Servers
+
+### Playwright, Filesystem, GitHub, Postgres, Docker, Context7
+- **Purpose**: Bridge the assistant's runtime context with local workspace assets, filesystems, Docker sockets, PostgreSQL query engines, browser drivers, and documentation portals.
+- **When to Use**: Leveraged continuously during pair-programming to fetch real-time schemas, run End-to-End browser layouts, search GitHub activities, and review framework documentation.
+- **Critical Reference**: Full configuration maps, environment variables, security constraints, and command setups are detailed in [mcp.md](docs/ai/mcp.md).

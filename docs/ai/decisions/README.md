@@ -22,5 +22,5 @@ Every ADR must be formatted using these structured sections:
 6. **Alternatives Considered**: What other options were evaluated? Why were they rejected?
 
 ## Active ADR Index
-- [ADR-0001: Local-First Runtime AI via Ollama](file:///Users/carllundholm/Dokument/Projekt/local-ai/docs/ai/decisions/ADR-0001-local-first-ai.md)
-- [ADR-0002: Web Product Focus with API-First Execution](file:///Users/carllundholm/Dokument/Projekt/local-ai/docs/ai/decisions/ADR-0002-web-product-direction.md)
+- [ADR-0001: Local-First Runtime AI via Ollama](ADR-0001-local-first-ai.md)
+- [ADR-0002: Web Product Focus with API-First Execution](ADR-0002-web-product-direction.md)

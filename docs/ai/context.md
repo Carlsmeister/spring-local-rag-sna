@@ -1,19 +1,19 @@
 # AI Workstation: Project Context
 
-This document details the business and technical context of the **local-ai** application. It establishes core principles, scope boundaries, and execution models.
+This document details the business and technical context of the application. It establishes core principles, scope boundaries, and execution models.
 
 ## Application Purpose & Capabilities
-**local-ai** is a privacy-focused, local-first web application designed to help job-seekers optimize their CVs, resumes, and cover letters. 
+The application (referred to as **Resume Match Helper** in user-facing contexts, formerly **local-ai**) is a privacy-focused, local-first web application designed to help job-seekers optimize their CVs, resumes, and cover letters. 
 
 ### Core Use Case
 1. **Document Ingestion**: Securely upload CVs and cover letters in PDF or DOCX format.
-2. **Text Parsing**: Extract raw text and metadata cleanly using Apache Tika.
-3. **Local AI Analysis**: Analyze documents to provide:
-   - ATS (Applicant Tracking System) compatibility scores.
+2. **Text Parsing**: Extract raw text and metadata cleanly (abstracting developer parser details like Apache Tika from users).
+3. **Local AI Analysis**: Analyze documents using local AI models (abstracting model details like Ollama/Gemma from the primary user flow) to provide:
+   - ATS compatibility scores.
    - Comprehensive feedback on strengths, structural weaknesses, and grammar.
    - Job ad alignment (analyzing gaps between CV contents and a specific job advertisement).
    - Factual improvement suggestions and keywords that the user should incorporate.
-4. **Factual Rewriting**: Suggest rewrites of specific resume bullet points or sentences that align with keywords, **without fabricating or inventing experiences, skills, or dates**.
+4. **Factual Rewriting**: Suggest rewrites of specific resume bullet points or sentences that align with keywords, **without fabricating or inventing experiences, skills, or dates**, under strict validation rules.
 
 ---
 

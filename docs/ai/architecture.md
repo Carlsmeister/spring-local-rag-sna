@@ -159,8 +159,9 @@ Job Ad Text -> Semantic Search -> PGVector Store -> Relevant CV Chunks -> System
 ---
 
 ## Deployment-Aware Architecture Notes
-- **Local Development**: Standard configuration targets local Ollama (`http://localhost:11434`) and local PostgreSQL.
+- **Local Development**: Standard configuration targets local Ollama (`http://localhost:11434`) and a Docker-hosted PostgreSQL database with PGVector (`docker compose up -d`).
 - **Web Deployment Readiness**: 
   - Database configurations are externalized to environment variables.
   - The model name and connection string for Ollama are dynamically configured through Spring Profiles (`dev`, `prod`).
   - Storage adapters are decoupled through interfaces (`StorageService`) to transition seamlessly from local scratch disks to secure, persistent environments.
+
