@@ -46,4 +46,61 @@ class JsonCleanUtilsTest {
         String input = "No json here";
         assertEquals("No json here", JsonCleanUtils.cleanResponse(input));
     }
+
+    @Test
+    void testCleanResponse_NestedQuotesInArray() {
+        String rawResponse = "{\n" +
+                "  \"atsScore\": 70,\n" +
+                "  \"strengths\": [\n" +
+                "    \"Structured format\",\n" +
+                "    \"Relevant skills listed in the \"Skills\" section\"\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"atsScore\": 70,\n" +
+                "  \"strengths\": [\n" +
+                "    \"Structured format\",\n" +
+                "    \"Relevant skills listed in the \\\"Skills\\\" section\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
+
+    @Test
+    void testCleanResponse_NestedQuotesAndCommas() {
+        String rawResponse = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"We need \"clean, fast\" code\",\n" +
+                "    \"Regular element\"\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"We need \\\"clean, fast\\\" code\",\n" +
+                "    \"Regular element\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
+
+    @Test
+    void testCleanResponse_AlreadyEscapedQuotes() {
+        String rawResponse = "{\n" +
+                "  \"strengths\": [\n" +
+                "    \"Already \\\"escaped\\\" quote\"\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"strengths\": [\n" +
+                "    \"Already \\\"escaped\\\" quote\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
 }
