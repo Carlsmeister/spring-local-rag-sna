@@ -3,8 +3,8 @@
 This task board acts as the active work tracker for the **local-ai** project.
 
 ## Board Status Summary
-- **Current Active Phase**: Phase 19 (UI/UX Redesign Implementation) - In Progress
-- **Active Sprint Target**: Implement the corporate light-mode redesign plan, establishing clean CSS design tokens, removing the Silk WebGL background, and updating all four main views to meet professional visual, accessibility, and utility criteria.
+- **Current Active Phase**: Phase 19 (UI/UX Redesign Implementation) - Completed
+- **Active Sprint Target**: Implement the corporate light-mode redesign plan, establishing clean CSS design tokens, removing the Silk WebGL background, and updating all four main views to meet professional visual, accessibility, and utility criteria. (Completed)
 
 ---
 
@@ -413,7 +413,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-054
 - **Title**: Centralize Design Tokens and Global CSS
 - **Phase**: Phase 19
-- **Status**: In Progress
+- **Status**: Done
 - **Description**: Add CSS variables for the corporate deep blue and teal light-mode palette in `index.css`. Import and configure the local Inter font. Remove references to WebGL backgrounds, glow effects, neon borders, and glassmorphism. Add standard focus rings and accessibility base styles.
 - **Files likely affected**:
   - `frontend/src/index.css`
@@ -424,7 +424,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-055
 - **Title**: Redesign Sidebar and Application Layout Shell
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Redesign the sidebar in `SidebarShell.tsx` using the new design system: solid white background, standard border, user-facing navigation labels (CV Review, Job Match, Bullet Optimizer, System Monitor). Move the System Monitor view under a visually separated "System" section. Display a compact active-document context in the sidebar. Apply the teal indicator and light blue-grey background to the active navigation item.
 - **Files likely affected**:
   - `frontend/src/components/SidebarShell.tsx`
@@ -434,18 +434,18 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-056
 - **Title**: Redesign CV Review View (Dashboard & Dropzone)
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Redesign `DocDropzone.tsx` and `AnalysisDashboard.tsx` to match the light-mode theme. In the dropzone, replace WebGL animations and glows with a clean gray border and a clear processing stepper. In the dashboard, replace the neon circular gauge with a horizontal progress track and numerical score badge. Rename "Weaknesses" to "Improvement opportunities" and format lists with clean semantic colors (green/amber/red).
 - **Files likely affected**:
   - `frontend/src/components/DocDropzone.tsx`
   - `frontend/src/components/AnalysisDashboard.tsx`
 - **Acceptance Criteria**:
-  - Dropzone uses a clear border layout with step-based indicators, circular dials are removed, and ATS score is rendered as a clean horizontal progress bar.
+  - Dropzone uses a clean border layout with step-based indicators, circular dials are removed, and ATS score is rendered as a clean horizontal progress bar.
 
 ### TS-057
 - **Title**: Redesign Job Match View (Matcher)
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Redesign the match workspace layout in `App.tsx` (matcher tab). Add the empty state for when no document is active. Implement a clean two-column comparison workspace (active CV summary on the left, job description textarea on the right). Rename primary action to "Analyse job match". Abstract Tika, PGVector, and Ollama technical details from the match results page, displaying user-understandable sections (Alignment score, Aligned vs Missing requirements, Keyword opportunities).
 - **Files likely affected**:
   - `frontend/src/App.tsx`
@@ -455,7 +455,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-058
 - **Title**: Redesign Bullet Optimizer View (Rewriter)
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Redesign the bullet optimization workspace in `App.tsx` (rewriter tab). Create a document-first layout with clickable extracted CV sentences on the left and stylistic controls/results on the right. Rename "Metrics-driven" style to "Results-focused". Format style selections as clear controls with explanation texts. Display suggestions clearly side-by-side or below the original sentence with copy/apply action controls.
 - **Files likely affected**:
   - `frontend/src/App.tsx`
@@ -465,7 +465,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-059
 - **Title**: Redesign System Monitor View (Admin)
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Redesign the Telemetry dashboard in `App.tsx` (admin tab). Render dense, professional tables, metric cards, and charts using the corporate blue and gray light palette.
 - **Files likely affected**:
   - `frontend/src/App.tsx`
@@ -475,7 +475,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-060
 - **Title**: Validate Accessibility, Responsiveness, and Clean Codebase
 - **Phase**: Phase 19
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Verify the redesign against WCAG 2.2 AA standards (color contrast, keyboard focus indicators, screen readers) and run responsive tests across mobile, tablet, and desktop widths. Remove legacy assets (`Silk.tsx` and glow utility imports) and confirm there are no compile warnings.
 - **Files likely affected**:
   - `frontend/src/components/animations/Silk.tsx`

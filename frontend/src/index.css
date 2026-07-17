@@ -1,20 +1,106 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Colors */
+  --color-background: #f6f8fb;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f8fafc;
+  --color-surface-hover: #f1f5f9;
+  --color-surface-selected: #eaf0f6;
+
+  --color-text-primary: #172033;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --color-text-inverse: #ffffff;
+
+  --color-primary: #1e3a5f;
+  --color-primary-hover: #162d4a;
+  --color-primary-subtle: #eaf0f6;
+
+  --color-accent: #14b8a6;
+  --color-accent-hover: #0f9f91;
+  --color-accent-subtle: #e7f8f5;
+  --color-accent-dark: #0f766e;
+
+  --color-border: #dce3ec;
+  --color-border-strong: #b8c6d6;
+
+  --color-success: #16a34a;
+  --color-success-subtle: #ecfdf3;
+
+  --color-warning: #f59e0b;
+  --color-warning-subtle: #fffbeb;
+
+  --color-error: #dc2626;
+  --color-error-subtle: #fef2f2;
+
+  --color-info: #2563eb;
+  --color-info-subtle: #eff6ff;
+
+  --color-focus: #0f766e;
+
+  --color-disabled-background: #e9eef4;
+  --color-disabled-text: #94a3b8;
+
+  /* Typography Scale */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.8125rem;
+  --font-size-base: 0.9375rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  --font-size-3xl: 1.875rem;
+}
+
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    @apply antialiased overflow-x-hidden;
+  }
+
+  /* Accessible Focus Outline */
+  *:focus-visible {
+    outline: 2px solid var(--color-focus) !important;
+    outline-offset: 2px !important;
   }
 }
 
-/* Custom glassy backdrop helper classes */
+/* Redesigned Clean Panels and Cards (formerly glassy) */
 .glass-panel {
-  @apply backdrop-blur-md bg-slate-950/40 border border-slate-800/60 shadow-2xl;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.05);
+  border-radius: 12px;
 }
 
 .glass-card {
-  @apply backdrop-blur-sm bg-slate-900/30 border border-slate-800/40 hover:border-indigo-500/30 transition-all duration-300;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: var(--color-border-strong);
+  background-color: var(--color-surface-hover);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+}
+
+/* Accessibility: Respect Reduced Motion Preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }
