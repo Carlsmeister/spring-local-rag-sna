@@ -3,8 +3,8 @@
 This task board acts as the active work tracker for the **local-ai** project.
 
 ## Board Status Summary
-- **Current Active Phase**: Phase 19 (UI/UX Redesign Implementation) - Completed
-- **Active Sprint Target**: Implement the corporate light-mode redesign plan, establishing clean CSS design tokens, removing the Silk WebGL background, and updating all four main views to meet professional visual, accessibility, and utility criteria. (Completed)
+- **Current Active Phase**: Phase 20 (AI Layout Unscrambler / Structuring Engine) - In Progress
+- **Active Sprint Target**: Implement the LLM-based layout parsing and restructuring pass for document ingestion. This will clean up the raw OCR layout text, preserve factual integrity, and structure chunks before vector store embedding, solving column layout fragmentation.
 
 ---
 
@@ -482,27 +482,114 @@ This task board acts as the active work tracker for the **local-ai** project.
 - **Acceptance Criteria**:
   - Contrast checks pass, all actions are keyboard-navigable, layouts stack correctly on mobile, and legacy WebGL/animation files are retired.
 
----
-
-## Future Phase Backlog (Awaiting Phase Activation)
-
 ### TS-051
 - **Title**: Build Dual-Column Job Match Gaps UI
 - **Phase**: Phase 16
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Design side-by-side matching screens, connect paste/submit description hooks, render missing keywords tags, and compile gap comparison layouts.
+- **Files likely affected**:
+  - `frontend/src/App.tsx`
+- **Acceptance Criteria**:
+  - Compares active document context against job descriptions, exposes matching scores and recommendations, and features a clean comparison workspace.
 
 ### TS-052
 - **Title**: Build Factual Sentence Rewriting Interface
 - **Phase**: Phase 17
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Render interactive sentence selectors, configure style modes (Action-oriented, Concise, Metrics-driven), and map proper noun alert flags.
+- **Files likely affected**:
+  - `frontend/src/App.tsx`
+- **Acceptance Criteria**:
+  - Splits parsed CV content into clickable sentences, provides style results, maps copy triggers, and displays blocked factual error messages.
 
 ### TS-053
 - **Title**: Build Telemetry Monitor visual analytics dashboard
 - **Phase**: Phase 18
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Construct high-fidelity charts detailing sub-agent processing timelines, P95 latency profiles, and token footprints.
+- **Files likely affected**:
+  - `frontend/src/App.tsx`
+- **Acceptance Criteria**:
+  - Renders telemetry timelines, model metadata summaries, and processing metrics in clean, light-mode dashboards.
+
+### TS-061
+- **Title**: Create CV Ingestion Pre-Processor Service
+- **Phase**: Phase 20
+- **Status**: Done
+- **Description**: Implement a service `CvStructuringService` that uses a system prompt template to structure and clean up raw layout-scrambled CV text (retrieved from Tika) into standardized Markdown format with sections (Summary, Experience, Education, Projects, Skills, Languages, Contacts) before it is chunked and stored.
+- **Files likely affected**:
+  - `src/main/resources/prompts/cv-structuring-prompt.txt`
+  - `src/main/java/com/example/demo/ai/parser/CvStructuringService.java`
+- **Acceptance Criteria**:
+  - Feeding a jumbled OCR string (with column-merged layout newlines) to the structuring service returns clean, restructured Markdown sections with preserved dates, names, and metrics.
+- **Tests required**:
+  - Unit tests with mock LLM responses validating that formatting errors are resolved and text structure is clean.
+
+### TS-062
+- **Title**: Integrate Pre-Processor into Ingestion Pipeline
+- **Phase**: Phase 20
+- **Status**: Done
+- **Description**: Update `DocumentService.java` to route raw text through `CvStructuringService` before saving `ExtractedText` and indexing it in the vector store.
+- **Files likely affected**:
+  - `src/main/java/com/example/demo/document/service/DocumentService.java`
+- **Acceptance Criteria**:
+  - Uploading a dual-column CV cleanly persists structured text, resolving mid-sentence splits, and indexes structured vector chunks.
+- **Tests required**:
+  - Integration tests simulating a PDF upload and verifying that `rawContent` of `ExtractedText` contains the structured markdown text.
+
+### TS-063
+- **Title**: Add Factual Safeguards for CV Restructuring
+- **Phase**: Phase 20
+- **Status**: Done
+- **Description**: Integrate factual validation checks to ensure the LLM-restructured CV text does not omit or fabricate key dates, companies, or programming languages from the original raw OCR text, falling back to raw text if validation fails.
+- **Files likely affected**:
+  - `src/main/java/com/example/demo/document/service/DocumentService.java`
+- **Acceptance Criteria**:
+  - A CV structuring output that fabricates or drops experience is rejected by the pre-processor, falling back to storing the raw Tika content safely rather than failing the upload.
+- **Tests required**:
+  - Unit tests verifying the fallback mechanism when restructuring fails validation rules.
+
+### TS-064
+- **Title**: Implement Hybrid Vector & Keyword Search
+- **Phase**: Phase 20 (Category A)
+- **Status**: Backlog
+- **Description**: Add a hybrid search capability that merges dense vector search (PGVector) with sparse keyword queries (PostgreSQL Full-Text Search) to ensure exact technology matches alongside semantic leadership/experience matching.
+- **Files likely affected**:
+  - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`
+  - `src/main/java/com/example/demo/job/service/JobMatchingService.java`
+- **Acceptance Criteria**:
+  - Running queries for exact keywords (e.g. "Kotlin" or "RSA") returns documents containing those exact keywords even if they are semantically distant, while general queries (e.g., "internship developer") return semantic matches.
+- **Tests required**:
+  - Unit tests verifying the merging logic and ranking priorities.
+
+### TS-065
+- **Title**: Implement Query Expansion using Local LLM
+- **Phase**: Phase 20 (Category B)
+- **Status**: Backlog
+- **Description**: Implement a query pre-processing pass that expands the user's search queries with synonyms and alternative terms (e.g., matching "frontend" with "React, JavaScript, CSS") using a quick pass to `gemma2:2b`.
+- **Files likely affected**:
+  - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`
+- **Acceptance Criteria**:
+  - Searching for "Frontend developer" automatically matches documents referencing "React" or "CSS" even if "frontend" is not explicitly mentioned.
+- **Tests required**:
+  - Unit tests validating query expansion formatting.
+
+### TS-066
+- **Title**: Implement Hierarchical Metadata Filters
+- **Phase**: Phase 20 (Category B)
+- **Status**: Backlog
+- **Description**: Add hierarchical RAG filters using document metadata, allowing users to filter searches by logical document boundaries or parent sections before similarity scores are computed.
+- **Files likely affected**:
+  - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`
+- **Acceptance Criteria**:
+  - Queries can be filtered dynamically using metadata properties in the similarity request.
+- **Tests required**:
+  - Unit tests validating metadata filter injection.
+
+---
+
+## Future Phase Backlog (Awaiting Phase Activation)
+None
 
 ---
 

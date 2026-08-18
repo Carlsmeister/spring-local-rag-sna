@@ -287,3 +287,15 @@ This roadmap structures the development of the **local-ai** application. It esta
   - Manual verification checklists for responsive stacking and accessibility.
   - Validation test suites to ensure existing ingestion, matching, and optimization API integrations are preserved.
 
+## Phase 20: AI Layout Unscrambler / Structuring Engine
+- **Goal**: Implement an LLM-based layout parsing and restructuring pass for document ingestion to clean up raw OCR layout text, preserve factual integrity, and structure chunks before vector store embedding, solving column layout fragmentation.
+- **Logic to Implement**:
+  - Implement a `CvStructuringService` to parse jumbled OCR text into a standardized format using a dedicated system prompt template.
+  - Integrate the restructuring service in `DocumentService.java` so that text is restructured after Tika parsing but before saving and vector indexing.
+  - Implement factual validation safeguards utilizing `FactualIntegrityService` to ensure no data is fabricated or lost during layout unscrambling, falling back to raw text if validation fails.
+- **Acceptance Criteria**:
+  - Uploading a dual-column CV cleanly persists structured text, resolving mid-sentence splits, and indexes structured vector chunks.
+- **Tests to Add**:
+  - Unit tests for `CvStructuringService` and integration tests for `DocumentService` validating the pre-processing flow and fallback integrity mechanics.
+
+

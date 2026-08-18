@@ -1,12 +1,16 @@
 package com.example.demo.document.service;
 
+import com.example.demo.ai.parser.CvStructuringService;
 import com.example.demo.ai.rag.service.EmbeddingService;
+import com.example.demo.ai.validation.FactualIntegrityService;
 import com.example.demo.document.parser.TikaParserService;
 import com.example.demo.dto.UploadResponseDto;
 import com.example.demo.model.Document;
 import com.example.demo.model.DocumentType;
 import com.example.demo.model.ExtractedText;
 import com.example.demo.repository.DocumentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,19 +18,31 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class DocumentService {
 
+    private static final Logger log = LoggerFactory.getLogger(DocumentService.class);
+
     private final TikaParserService tikaParserService;
     private final DocumentRepository documentRepository;
     private final EmbeddingService embeddingService;
+    private final CvStructuringService cvStructuringService;
+    private final FactualIntegrityService factualIntegrityService;
 
-    public DocumentService(TikaParserService tikaParserService, DocumentRepository documentRepository, EmbeddingService embeddingService) {
+    public DocumentService(
+            TikaParserService tikaParserService,
+            DocumentRepository documentRepository,
+            EmbeddingService embeddingService,
+            CvStructuringService cvStructuringService,
+            FactualIntegrityService factualIntegrityService) {
         this.tikaParserService = tikaParserService;
         this.documentRepository = documentRepository;
         this.embeddingService = embeddingService;
+        this.cvStructuringService = cvStructuringService;
+        this.factualIntegrityService = factualIntegrityService;
     }
 
     @Transactional
@@ -55,6 +71,22 @@ public class DocumentService {
         if (extractedTextContent == null || extractedTextContent.trim().length() < 100) {
             throw new IllegalArgumentException("Extracted text must be at least 100 characters.");
         }
+
+        // 4. Layout Restructuring Pass with local LLM & factual validation fallback
+        String finalizedTextContent = extractedTextContent;
+        try {
+            log.info("Initiating LLM layout restructuring pass for: {}", fileName);
+            String structuredText = cvStructuringService.structureCv(extractedTextContent);
+            
+            // Validate factual integrity of the restructured CV against raw text
+            factualIntegrityService.validateFactualIntegrity(extractedTextContent, List.of(), structuredText);
+            
+            log.info("Layout restructuring and validation succeeded. Storing cleaned Markdown CV.");
+            finalizedTextContent = structuredText;
+        } catch (Exception e) {
+            log.warn("Factual validation failed or restructuring error occurred. Falling back safely to raw text. Error: {}", e.getMessage());
+            finalizedTextContent = extractedTextContent;
+        }
         
         LocalDateTime now = LocalDateTime.now();
         
@@ -68,7 +100,7 @@ public class DocumentService {
         
         ExtractedText extractedText = ExtractedText.builder()
                 .document(document)
-                .rawContent(extractedTextContent)
+                .rawContent(finalizedTextContent)
                 .parsedAt(now)
                 .build();
         
@@ -77,14 +109,14 @@ public class DocumentService {
         Document savedDocument = documentRepository.save(document);
         
         // Index the document chunks in the vector store
-        embeddingService.indexDocument(savedDocument.getId(), extractedTextContent);
+        embeddingService.indexDocument(savedDocument.getId(), finalizedTextContent);
         
         return new UploadResponseDto(
                 savedDocument.getId(),
                 savedDocument.getFileName(),
                 savedDocument.getFileSize(),
                 savedDocument.getContentType(),
-                extractedTextContent,
+                finalizedTextContent,
                 now
         );
     }

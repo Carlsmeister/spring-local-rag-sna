@@ -36,12 +36,31 @@ public class EmbeddingService {
         List<String> chunks = chunkingService.chunkText(rawText);
         List<Document> documents = new ArrayList<>();
 
+        String fileName = "CV";
+        try {
+            fileName = jdbcTemplate.queryForObject(
+                    "SELECT file_name FROM documents WHERE id = ?",
+                    String.class,
+                    documentId
+            );
+            if (fileName == null) {
+                fileName = "CV";
+            }
+        } catch (Exception e) {
+            // Fallback for mocked jdbcTemplate in tests or database errors
+            fileName = "CV";
+        }
+
         for (int i = 0; i < chunks.size(); i++) {
             Map<String, Object> metadata = new HashMap<>();
             metadata.put("documentId", documentId.toString());
             metadata.put("chunkIndex", i);
 
-            Document doc = new Document(chunks.get(i), metadata);
+            // Prepend contextual information for Contextual Retrieval
+            String contextualHeader = String.format("[Document Context: %s | Section Index: %d]\n", fileName, i + 1);
+            String contentWithContext = contextualHeader + chunks.get(i);
+
+            Document doc = new Document(contentWithContext, metadata);
             documents.add(doc);
         }
 
