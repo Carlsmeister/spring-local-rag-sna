@@ -103,4 +103,80 @@ class JsonCleanUtilsTest {
 
         assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
     }
+
+    @Test
+    void testCleanResponse_ColonInsideString() {
+        String rawResponse = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"For example: \\\"Increased student engagement\\\"\"\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"For example: \\\"Increased student engagement\\\"\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
+
+    @Test
+    void testCleanResponse_MissingCommas() {
+        String rawResponse = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Item one\"\n" +
+                "    \"Item two\"\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Item one\",\n" +
+                "    \"Item two\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
+
+    @Test
+    void testCleanResponse_TrailingCommas() {
+        String rawResponse = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Item one\",\n" +
+                "    \"Item two\",\n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Item one\",\n" +
+                "    \"Item two\"\n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
+
+    @Test
+    void testCleanResponse_RealWorldLLMFailure() {
+        String rawResponse = "{\n" +
+                "  \"atsScore\": 70,\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Add specific details about technical skills and their implementation in projects\" ,\n" +
+                "    \"Quantify achievements with concrete metrics to demonstrate impact\",  \n" +
+                "  ]\n" +
+                "}";
+
+        String expected = "{\n" +
+                "  \"atsScore\": 70,\n" +
+                "  \"recommendations\": [\n" +
+                "    \"Add specific details about technical skills and their implementation in projects\" ,\n" +
+                "    \"Quantify achievements with concrete metrics to demonstrate impact\"  \n" +
+                "  ]\n" +
+                "}";
+
+        assertEquals(expected, JsonCleanUtils.cleanResponse(rawResponse));
+    }
 }

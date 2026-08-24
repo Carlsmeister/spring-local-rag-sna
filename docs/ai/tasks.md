@@ -3,8 +3,8 @@
 This task board acts as the active work tracker for the **local-ai** project.
 
 ## Board Status Summary
-- **Current Active Phase**: Phase 20 (AI Layout Unscrambler / Structuring Engine) - In Progress
-- **Active Sprint Target**: Implement the LLM-based layout parsing and restructuring pass for document ingestion. This will clean up the raw OCR layout text, preserve factual integrity, and structure chunks before vector store embedding, solving column layout fragmentation.
+- **Current Active Phase**: Phase 20 (AI Layout Unscrambler / Structuring Engine) - Completed
+- **Active Sprint Target**: Implement the LLM-based layout parsing and restructuring pass for document ingestion. This will clean up the raw OCR layout text, preserve factual integrity, and structure chunks before vector store embedding, solving column layout fragmentation. [Sprint fully completed and verified].
 
 ---
 
@@ -552,7 +552,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-064
 - **Title**: Implement Hybrid Vector & Keyword Search
 - **Phase**: Phase 20 (Category A)
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Add a hybrid search capability that merges dense vector search (PGVector) with sparse keyword queries (PostgreSQL Full-Text Search) to ensure exact technology matches alongside semantic leadership/experience matching.
 - **Files likely affected**:
   - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`
@@ -565,7 +565,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-065
 - **Title**: Implement Query Expansion using Local LLM
 - **Phase**: Phase 20 (Category B)
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Implement a query pre-processing pass that expands the user's search queries with synonyms and alternative terms (e.g., matching "frontend" with "React, JavaScript, CSS") using a quick pass to `gemma2:2b`.
 - **Files likely affected**:
   - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`
@@ -577,7 +577,7 @@ This task board acts as the active work tracker for the **local-ai** project.
 ### TS-066
 - **Title**: Implement Hierarchical Metadata Filters
 - **Phase**: Phase 20 (Category B)
-- **Status**: Backlog
+- **Status**: Done
 - **Description**: Add hierarchical RAG filters using document metadata, allowing users to filter searches by logical document boundaries or parent sections before similarity scores are computed.
 - **Files likely affected**:
   - `src/main/java/com/example/demo/ai/rag/service/EmbeddingService.java`

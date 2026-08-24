@@ -42,7 +42,13 @@ public final class JsonCleanUtils {
         }
 
         // 3. Escape nested unescaped quotes inside JSON strings
-        return escapeNestedQuotes(cleaned);
+        String escaped = escapeNestedQuotes(cleaned);
+
+        // 4. Fix missing commas between JSON elements
+        String fixedCommas = fixMissingCommas(escaped);
+
+        // 5. Remove trailing commas in arrays/objects
+        return removeTrailingCommas(fixedCommas);
     }
 
     /**
@@ -95,8 +101,15 @@ public final class JsonCleanUtils {
         char next = nextIdx != -1 ? s.charAt(nextIdx) : '\0';
 
         // 1. Check if it's the opening quote of a key or value
-        if (prev == '{' || prev == '[' || prev == ':') {
+        if (prev == '{' || prev == '[') {
             return true;
+        }
+        if (prev == ':') {
+            // Check if the colon is structural (preceded by a key's closing double quote)
+            int colonPrevIdx = getPrevNonWhitespaceIndex(s, prevIdx);
+            if (colonPrevIdx != -1 && s.charAt(colonPrevIdx) == '"') {
+                return true;
+            }
         }
 
         // 2. Check if it's the closing quote of a key or value
@@ -114,6 +127,14 @@ public final class JsonCleanUtils {
             return isStructuralComma(s, nextIdx);
         }
 
+        // 5. Check if it is a structural quote next to another quote separated by whitespace (missing comma case)
+        if (next == '"' && nextIdx > index + 1) {
+            return true;
+        }
+        if (prev == '"' && prevIdx < index - 1) {
+            return true;
+        }
+
         return false;
     }
 
@@ -125,9 +146,9 @@ public final class JsonCleanUtils {
         char next = nextIdx != -1 ? s.charAt(nextIdx) : '\0';
 
         // A structural comma is preceded by a closing quote or digit/bracket/brace,
-        // and followed by an opening quote or digit/bracket/brace.
+        // and followed by an opening quote or digit/bracket/brace (or closing bracket/brace for trailing commas).
         boolean validPrev = (prev == '"' || prev == ']' || prev == '}' || Character.isDigit(prev));
-        boolean validNext = (next == '"' || next == '[' || next == '{' || Character.isDigit(next));
+        boolean validNext = (next == '"' || next == '[' || next == '{' || Character.isDigit(next) || next == ']' || next == '}');
 
         return validPrev && validNext;
     }
@@ -150,5 +171,121 @@ public final class JsonCleanUtils {
             }
         }
         return -1;
+    }
+
+    private static String fixMissingCommas(String json) {
+        if (json == null || json.isEmpty()) {
+            return json;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int len = json.length();
+        boolean insideString = false;
+
+        for (int i = 0; i < len; i++) {
+            char c = json.charAt(i);
+
+            if (c == '"') {
+                // Check if this double quote is escaped
+                boolean isEscaped = false;
+                if (i > 0 && json.charAt(i - 1) == '\\') {
+                    int bsCount = 0;
+                    for (int j = i - 1; j >= 0; j--) {
+                        if (json.charAt(j) == '\\') {
+                            bsCount++;
+                        } else {
+                            break;
+                        }
+                    }
+                    isEscaped = (bsCount % 2 != 0);
+                }
+
+                if (isEscaped) {
+                    sb.append(c);
+                } else {
+                    sb.append(c);
+                    insideString = !insideString;
+
+                    if (!insideString) {
+                        // We just closed a string! Look ahead to see if the next non-whitespace character starts a new element
+                        int nextIdx = getNextNonWhitespaceIndex(json, i);
+                        if (nextIdx != -1) {
+                            char nextChar = json.charAt(nextIdx);
+                            // JSON values/keys can only start with: ", {, [, digit, -, t, f, n
+                            boolean isNextValueStart = (nextChar == '"' || nextChar == '{' || nextChar == '[' 
+                                    || Character.isDigit(nextChar) || nextChar == '-' 
+                                    || nextChar == 't' || nextChar == 'f' || nextChar == 'n');
+
+                            if (isNextValueStart) {
+                                // Check if there is already a comma between the closing quote and next element start
+                                boolean hasComma = false;
+                                for (int k = i + 1; k < nextIdx; k++) {
+                                    if (json.charAt(k) == ',') {
+                                        hasComma = true;
+                                        break;
+                                    }
+                                }
+                                if (!hasComma) {
+                                    sb.append(",");
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    private static String removeTrailingCommas(String json) {
+        if (json == null || json.isEmpty()) {
+            return json;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int len = json.length();
+        boolean insideString = false;
+
+        for (int i = 0; i < len; i++) {
+            char c = json.charAt(i);
+
+            if (c == '"') {
+                // Check if this double quote is escaped
+                boolean isEscaped = false;
+                if (i > 0 && json.charAt(i - 1) == '\\') {
+                    int bsCount = 0;
+                    for (int j = i - 1; j >= 0; j--) {
+                        if (json.charAt(j) == '\\') {
+                            bsCount++;
+                        } else {
+                            break;
+                        }
+                    }
+                    isEscaped = (bsCount % 2 != 0);
+                }
+
+                sb.append(c);
+                if (!isEscaped) {
+                    insideString = !insideString;
+                }
+            } else if (c == ',' && !insideString) {
+                // Check if the next non-whitespace character is } or ]
+                int nextIdx = getNextNonWhitespaceIndex(json, i);
+                if (nextIdx != -1) {
+                    char nextChar = json.charAt(nextIdx);
+                    if (nextChar == '}' || nextChar == ']') {
+                        // Skip appending this trailing comma!
+                        continue;
+                    }
+                }
+                sb.append(c);
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 }
